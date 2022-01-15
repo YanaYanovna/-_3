@@ -54,6 +54,30 @@ namespace Dictionary
             return (default, false);
         }
 
+        public bool FindForContainsKey(TKey element)
+        {
+            var current = _root;
+
+            while (current != null)
+            {
+                var compareResult = element.CompareTo(current.KVP.Key);
+                if (compareResult < 0)
+                {
+                    current = current.Left;
+                }
+                else if (compareResult > 0)
+                {
+                    current = current.Right;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         // +++++++++13+++++++++
         public bool Insert(KeyValuePair<TKey, TValue> element)
         {
@@ -271,16 +295,28 @@ namespace Dictionary
             _tree = new BinaryTree<TKey, TValue>();
         }
 
+        ////Contains(T)++++++++++
+        //public bool Contains(KeyValuePair<TKey, TValue> item)
+        //{
+        //    return _tree.Traverse().ToList().Contains(item);
+        //}
+
+        ////ContainsKey(TKey)++++++++++
+        //public bool ContainsKey(TKey key)
+        //{
+        //    return _tree.Traverse().Select(keyValuePair => keyValuePair.Key).Contains(key);
+        //}
+
         //Contains(T)++++++++++
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            return _tree.Traverse().ToList().Contains(item);
+            return _tree.Find(item.Key).Item1.Equals(item.Value);
         }
 
         //ContainsKey(TKey)++++++++++
         public bool ContainsKey(TKey key)
         {
-            return _tree.Traverse().Select(keyValuePair => keyValuePair.Key).Contains(key);
+            return _tree.FindForContainsKey(key);
         }
 
         //CopyTo(T[], Int32)++++++++++
