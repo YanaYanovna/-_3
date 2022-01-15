@@ -310,7 +310,8 @@ namespace Dictionary
         //Contains(T)++++++++++
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            return _tree.Find(item.Key).Item1.Equals(item.Value);
+            var result = _tree.Find(item.Key);
+            return result.Item2 && result.Item1.Equals(item.Value);
         }
 
         ////ContainsKey(TKey)++++++++++
